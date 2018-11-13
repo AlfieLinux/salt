@@ -10,7 +10,7 @@
 - RAM: 2x 8Gb DDR4 @ 2667MHz
 - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
 
-## Git salt repo /srv/salt
+## Git salt repo /srv/salt (16:35 13.11.2018)
 
 I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
 
@@ -73,7 +73,90 @@ And it seems that I immediatly fixed the problem by using ; instead of &&.
 
 And it didn't work without adding sudo to every step.
 
+Since our assignment was to write this report using markdown I took my time to get used to it, used some cheatsheets that I found from browsing the interwebs and tried to make my report look somewhat readable from the get-go.
 
+[Help with markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+[Help with git commands](http://terokarvinen.com/2016/publish-your-project-with-github)
+
+## git log, diff and blame (17:22)
+
+### git log
+
+```
+$ git log
+commit 11d68398e3c500fd04de89e221b3c17fb0d7a7a4 (HEAD -> master, origin/master, origin/HEAD)
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:19:58 2018 +0000
+
+    README edits
+
+commit c6e6b0b00c9093769641ccd175e852718fe2c64e
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:13:43 2018 +0000
+
+    edits
+
+commit 76c12a4ebe69d993905041c79371c613694c367e
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:12:43 2018 +0000
+
+    Edits to readme
+
+commit e0da8122b76bc86055119a916a8d94e06404a0d0
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:10:19 2018 +0000
+
+    S
+
+commit 4cd67f724fb07258c1c6f4262dc2abe5eabfd855
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:09:46 2018 +0000
+
+    EDITS
+
+commit 13a6998135df4b2893f0b31804f67d607ab92336
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:05:45 2018 +0000
+
+    README
+
+commit d943c5e4caae9175d77a77e04bd12b78abeaaba0
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:04:53 2018 +0000
+
+    README edits
+
+commit 2a60cb7edf6c8a215c4dbc112604090e351a38b7
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 15:01:52 2018 +0000
+
+    README edited
+
+commit 9e8083a877b630b4f55296948c906e1cdbe7ce18
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 14:54:47 2018 +0000
+
+    README modified again
+
+commit e549257a373fb8afe7a0d889854c5c6da8138458
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 14:52:47 2018 +0000
+
+    Readme edited
+
+commit aff44519b99c2b341370154fec34876030d09f36
+Author: AlfieLinux <a1704459@myy.haaga-helia.fi>
+Date:   Tue Nov 13 14:50:40 2018 +0000
+
+    New shizzle
+```
+
+git log lists the newest commits at the top and is a useful tool to see how many commits have been made and when they were done. This looks to be very useful when doing e.g. group projects.
+
+- commit: Looks to be some kind of a Hash that is given to each commit you make. When looking in to it it's called SHA-1 checksum for short (Secure Hash Algorithm 1).
+- Author: Who made the commit (user  and his/her email.)
+- Date: What time was the commit made.
+And at the bottom you can see what the author wrote in the commit message.
 
 
 
