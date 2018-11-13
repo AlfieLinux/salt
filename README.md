@@ -69,8 +69,11 @@ But it for some reason didn't work and I figured out that I would have to use gi
 > sudo git commit && git pull && git push
 
 Which didn't matter since it's not that big of a hindrance for me.
+And it seems that I immediatly fixed the problem by using ; instead of &&.
 
+> sudo git add .; sudo git commit; sudo git pull; sudo git push
 
+And it didn't work without adding sudo to every step.
 
 
 
