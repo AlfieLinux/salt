@@ -235,6 +235,19 @@ When you think you've done an irrecoverable mistake and deleted something import
 
 I simulated this situation with deleting this very report that I'm writing currently, which was kinda stupid if this simulation somehow went wrong.
 
+`$ sudo rm README.md`
+
+After deleting the file I used 
+`sudo git reset --hard HEAD`
+to revert all the changes and going back to the last commit that was made.
+```
+$ sudo git reset --hard HEAD
+HEAD is now at 7b096a4 READ
+```
+
+WARNING: Do not commit after deleting any file, if you are to simulate this. Although I'm pretty sure that you can pick whatever commit you want to revert back to.
+
+
 
 SOURCES:
 
