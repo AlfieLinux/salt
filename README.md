@@ -231,7 +231,7 @@ Shows what was edited, when it was edited, who edited it and which line was edit
 
 ## Assignment E) git reset hard HEAD (17:55)
 
-$ver commit you want to revert back to.**
+**WARNING: Do not commit after deleting any file if you were to simulate this. Although I'm pretty sure that you can pick whatever commit you want to revert back to.**
 
 
 When you think you've done an irrecoverable mistake and deleted something important from your git repo you can use git reset --hard HEAD to recover the lost file/files.
