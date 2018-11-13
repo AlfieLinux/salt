@@ -158,7 +158,44 @@ git log lists the newest commits at the top and is a useful tool to see how many
 - Date: What time was the commit made.
 And at the bottom you can see what the author wrote in the commit message.
 
+### git diff
 
+```
+$ git diff 76c12a4ebe69d993905041c79371c613694c367e
+diff --git a/README.md b/README.md
+index c34861b..47fe929 100644
+--- a/README.md
++++ b/README.md
+@@ -10,7 +10,7 @@
+ - RAM: 2x 8Gb DDR4 @ 2667MHz
+ - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
+ 
+-## Starting out
++## Git salt repo /srv/salt (16:35 13.11.2018)
+ 
+ I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
+ 
+@@ -43,7 +43,7 @@ To add all the changes I'd made
+ 
+ `sudo git commit`
+ 
+-To save the changed to the local repo, but after using this command it asked my github account credentials so I need to put them in.
++To save the changes to the local repo, but after using this command it asked my github account credentials so I needed to put them in.
+ 
+ `git config --global user.email "you@example.com"`
+ 
+@@ -73,6 +73,95 @@ And it seems that I immediatly fixed the problem by using ; instead of &&.
+ 
+ And it didn't work without adding sudo to every step.
+ 
++Since our assignment was to write this report using markdown I took my time to get used to it, used some cheatsheets that I found from browsing the interwebs and tried to make my report look somewhat readable from the get-go.
++
++[Help with markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
++[Help with git commands](http://terokarvinen.com/2016/publish-your-project-with-github)
++
+```
+
+git diff "commit hash" lists all the changes made in your repository. And since the only things I've edited thusfar is my README.md it shows what changes were made to it.
 
 
 
