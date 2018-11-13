@@ -277,7 +277,12 @@ hostname -I
 date
 ```
 and tested it 
-`bash ipos.sh`
+
+```
+$ bash ipos.sh 
+192.168.10.50 
+Tue Nov 13 16:33:29 UTC 2018
+```
 
 
 
