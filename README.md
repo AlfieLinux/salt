@@ -29,13 +29,9 @@ After that I copied everything from my original repository to my newly made one 
 
 ```
 sudo cp -r /home/xubuntu/salt/salt/apache/ .
-
 sudo cp -r /home/xubuntu/salt/salt/php/ .
-
 sudo cp -r /home/xubuntu/salt/salt/skeleton/ .
-
 sudo cp -r /home/xubuntu/salt/salt/sysstat/ .
-
 sudo cp -r /home/xubuntu/salt/salt/top.sls .
 ```
 After that I used 
