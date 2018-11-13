@@ -412,6 +412,9 @@ timppa@xubuntu:~$ ipos
 Tue Nov 13 17:06:09 UTC 2018
 ```
 
+### Afterthoughts
+
+I think it's fun to learn new stuff with salt. You are given proper syntax errors that give you information about what went wrong and where. Trying to figure out stuff on your own is pretty rewarding and even if you end up looking things up from a guide you learn more stuff on the road of creating.
 
 SOURCES:
 
