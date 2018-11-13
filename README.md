@@ -1,4 +1,4 @@
-# Using github repository to update my saltstack.
+-# Using github repository to update my saltstack.
 
 #### This report is written from my personal computer using a Xubuntu 18.04.1 bootable USB and it's written using markdown.
 
@@ -359,8 +359,58 @@ xubuntu@xubuntu:/srv/salt/ipos$
 
 Now it worked, but I couldn't run the command so I need to change the permissions to the file using salt.
 
+I haven't yet learned how to edit file permissions, but I have a feeling that it's done by using file.managed.
 
+In the end I couldn't figure everything out myself, but I looked from the interwebs for the syntax that gives file permissions and I found it [here](https://docs.saltstack.com/en/latest/ref/states/all/salt.states.file.html)
 
+So now my state looks like this:
+
+```
+/usr/local/bin/ipos:
+  file.managed:
+    - source: salt://ipos/ipos
+    - user: root
+    - group: root
+    - mode: 755
+```
+
+And it seemed to work atleast on my xubunbtu user, but what about a new user?
+
+```
+$ sudo adduser timppa
+Adding user `timppa' ...
+Adding new group `timppa' (1000) ...
+Adding new user `timppa' (1000) with group `timppa' ...
+Creating home directory `/home/timppa' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for timppa
+Enter the new value, or press ENTER for the default
+	Full Name []: Timppa Timonen
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] y
+```
+
+I installed SSH to try my new user.
+
+`$ sudo apt-get -y install ssh`
+
+and connected to my new user
+
+`$ ssh timppa@localhost`
+
+and tried the command out
+
+```
+timppa@xubuntu:~$ ipos
+192.168.10.50 
+Tue Nov 13 17:06:09 UTC 2018
+```
 
 
 SOURCES:
