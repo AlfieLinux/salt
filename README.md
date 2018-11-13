@@ -229,8 +229,11 @@ e549257a (AlfieLinux 2018-11-13 14:52:47 +0000  19) I then cloned my already exi
 
 Shows what was edited, when it was edited, who edited it and which line was edited. Again an useful command for group projects or at workplaces when someone has made a huge mistake and won't admit making one :').
 
+## git reset hard HEAD
 
+When you think you've done an irrecoverable mistake and deleted something important from your git repo you can use git reset --hard HEAD to recover the lost file/files.
 
+I simulated this situation with deleting this very report that I'm writing currently, which was kinda stupid if this simulation somehow went wrong.
 
 
 SOURCES:
