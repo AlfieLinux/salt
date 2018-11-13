@@ -227,7 +227,7 @@ e549257a (AlfieLinux 2018-11-13 14:52:47 +0000  19) I then cloned my already exi
 9e8083a8 (AlfieLinux 2018-11-13 14:54:47 +0000  22) 
 ```
 
-Shows what was edited, when it was edited, who edited it and which line was edited. Again a useful command for group projects or at workplaces when someone has made a huge mistake and won't admit making one :').
+Shows what was edited, when it was edited, who edited it and which line was edited. Again an useful command for group projects or at workplaces when someone has made a huge mistake and won't admit making one :').
 
 
 
