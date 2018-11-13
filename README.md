@@ -10,6 +10,8 @@
 - RAM: 2x 8Gb DDR4 @ 2667MHz
 - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
 
+## Starting out
+
 I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
 > sudo apt-get -y install salt-master salt-minion
  
@@ -56,8 +58,17 @@ After adding my email and username I used
 To push without getting asked for password constantly.
 After all that stuff was done it was time for me to do my first full run of commits and pushes.
 
+I first tried to do it by only using one command
 
+> sudo git add . && git commit && git pull && git push
 
+But it for some reason didn't work and I figured out that I would have to use git add . separate from the other commands like
+
+> sudo git add .
+
+> sudo git commit && git pull && git push
+
+Which didn't matter since it's not that big of a hindrance for me.
 
 
 
