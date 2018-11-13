@@ -424,3 +424,5 @@ SOURCES:
 [GitHub](https://github.com/)
 
 [Some help with markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+[File permissions help](https://docs.saltstack.com/en/latest/ref/states/all/salt.states.file.html)
