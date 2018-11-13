@@ -10,66 +10,66 @@
 - RAM: 2x 8Gb DDR4 @ 2667MHz
 - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
 
-## Git salt repo /srv/salt (16:35 13.11.2018)
+## Assignment C)  Git salt repo /srv/salt (16:35 13.11.2018)
 
 I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
 
-`sudo apt-get -y install salt-master salt-minion`
+`$ sudo apt-get -y install salt-master salt-minion`
  
 I then cloned my already existing salt repository from github to my home directory.
 
-`git clone "Link from repo"`
+`$ git clone "Link from repo"`
 
 After that I created a new repository named salt and cloned it under /srv/.
 
-`git clone https://github.com/AlfieLinux/salt.git`
+`$ git clone https://github.com/AlfieLinux/salt.git`
 
 Now I got a folder called salt under /srv/ so that my life would be a little easier.
 
 After that I copied everything from my original repository to my newly made one using cp (not that I was already under /srv/salt directory.
 
 ```
-sudo cp -r /home/xubuntu/salt/salt/apache/ .
-sudo cp -r /home/xubuntu/salt/salt/php/ .
-sudo cp -r /home/xubuntu/salt/salt/skeleton/ .
-sudo cp -r /home/xubuntu/salt/salt/sysstat/ .
-sudo cp -r /home/xubuntu/salt/salt/top.sls .
+$ sudo cp -r /home/xubuntu/salt/salt/apache/ .
+$ sudo cp -r /home/xubuntu/salt/salt/php/ .
+$ sudo cp -r /home/xubuntu/salt/salt/skeleton/ .
+$ sudo cp -r /home/xubuntu/salt/salt/sysstat/ .
+$ sudo cp -r /home/xubuntu/salt/salt/top.sls .
 ```
 After that I used 
 
-`sudo git add .`
+`$ sudo git add .`
 
 To add all the changes I'd made
 
-`sudo git commit`
+`$ sudo git commit`
 
 To save the changes to the local repo, but after using this command it asked my github account credentials so I needed to put them in.
 
-`git config --global user.email "you@example.com"`
+`$ git config --global user.email "you@example.com"`
 
-`git config --global user.name "Your Name"`
+`$ git config --global user.name "Your Name"`
 
 After adding my email and username I used 
 
-`git config --global credential.helper "cache --timeout=3600"`
+`$ git config --global credential.helper "cache --timeout=3600"`
 
 To push without getting asked for password constantly.
 After all that stuff was done it was time for me to do my first full run of commits and pushes.
 
 I first tried to do it by only using one command
 
-`sudo git add . && git commit && git pull && git push`
+`$ sudo git add . && git commit && git pull && git push`
 
 But it for some reason didn't work and I figured out that I would have to use git add . separate from the other commands like
 
-`sudo git add .`
+`$ sudo git add .`
 
-`sudo git commit && git pull && git push`
+`$ sudo git commit && git pull && git push`
 
 Which didn't matter since it's not that big of a hindrance for me.
 And it seems that I immediatly fixed the problem by using ; instead of &&.
 
-`sudo git add .; sudo git commit; sudo git pull; sudo git push`
+`$ sudo git add .; sudo git commit; sudo git pull; sudo git push`
 
 And it didn't work without adding sudo to every step.
 
@@ -78,7 +78,7 @@ Since our assignment was to write this report using markdown I took my time to g
 [Help with markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 [Help with git commands](http://terokarvinen.com/2016/publish-your-project-with-github)
 
-## git log, diff and blame (17:22)
+## Assignment D) git log, diff and blame (17:22)
 
 ### git log
 
@@ -195,7 +195,7 @@ index c34861b..47fe929 100644
 +
 ```
 
-`git diff "commit hash"`
+`$ git diff "commit hash"`
 
  lists all the changes made in your repository. And since the only things I've edited thusfar is my README.md it shows what changes were made to it.
 
@@ -229,7 +229,10 @@ e549257a (AlfieLinux 2018-11-13 14:52:47 +0000  19) I then cloned my already exi
 
 Shows what was edited, when it was edited, who edited it and which line was edited. Again an useful command for group projects or at workplaces when someone has made a huge mistake and won't admit making one :').
 
-## git reset hard HEAD
+## Assignment E) git reset hard HEAD (17:55)
+
+$ver commit you want to revert back to.**
+
 
 When you think you've done an irrecoverable mistake and deleted something important from your git repo you can use git reset --hard HEAD to recover the lost file/files.
 
@@ -245,7 +248,11 @@ $ sudo git reset --hard HEAD
 HEAD is now at 7b096a4 READ
 ```
 
-WARNING: Do not commit after deleting any file, if you are to simulate this. Although I'm pretty sure that you can pick whatever commit you want to revert back to.
+**WARNING: Do not commit after deleting any file if you were to simulate this. Although I'm pretty sure that you can pick whatever commit you want to revert back to.**
+
+## Assignment F) Creating a new salt module. (18:09)
+
+
 
 
 
