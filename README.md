@@ -276,7 +276,8 @@ I created a file in my home directory called ipos.sh
 hostname -I
 date
 ```
-
+and tested it 
+`bash ipos.sh`
 
 
 
