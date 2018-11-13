@@ -252,6 +252,31 @@ HEAD is now at 7b096a4 READ
 
 ## Assignment F) Creating a new salt module. (18:09)
 
+For the module I wanted to try to create something using my own skills with salt, without looking up from a guide.
+
+I want to create a state that gives everyone rights to a command that can be used anywhere. 
+What steps do I normally go thru when creating a command and giving rights?
+- Create the command using whatever language I want, this time it's going to be bash.
+- Add the command to the directory /usr/local/bin/ directory so that it's usable anywhere.
+- Test it using another user that I'm going to create.
+
+I started by creating a new directory under /srv/salt/
+`$ sudo mkdir ipos`
+Then I created a new init.sls file in that directory.
+`$ sudo nano init.sls`
+And wrote something inside just to keep the file there.
+
+The command that i'm creating needs to print out the clients ip address and current date.
+
+I created a file in my home directory called ipos.sh
+`$ nano ipos.sh`
+```
+#!/bin/bash
+
+hostname -I
+date
+```
+
 
 
 
