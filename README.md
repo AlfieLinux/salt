@@ -284,6 +284,82 @@ $ bash ipos.sh
 Tue Nov 13 16:33:29 UTC 2018
 ```
 
+Then I want to give everyone rights to the new command
+`$ chmod a+x ipos.sh`
+and change the name from ipos.sh to ipos
+`$ mv ipos.sh ipos`
+
+I'm not going to move the file to /usr/local/bin/ now, I'm going to do it using salt and I'm also going to check whether it gives everyone rights to the file or not.
+
+`$ sudo nano init.sls` 
+
+
+/usr/local/bin/:
+  file.managed:
+    - source: salt://ipos/ipos
+
+```
+$ sudo salt '*' state.apply ipos
+slavedude:
+----------
+          ID: /usr/local/bin/
+    Function: file.managed
+      Result: False
+     Comment: Specified target /usr/local/bin/ is a directory
+     Started: 16:46:49.873542
+    Duration: 0.55 ms
+     Changes:   
+
+Summary for slavedude
+------------
+Succeeded: 0
+Failed:    1
+------------
+Total states run:     1
+Total run time:   0.550 ms
+ERROR: Minions returned with non-zero exit code
+```
+
+Didn't work since I hadn't given the file name at the very top.
+
+`$ sudo nano init.sls`
+
+/usr/local/bin/ipos:    
+  file.managed:
+    - source: salt://ipos/ipos
+
+
+```
+xubuntu@xubuntu:/srv/salt/ipos$ sudo nano init.sls 
+xubuntu@xubuntu:/srv/salt/ipos$ sudo salt '*' state.apply ipos
+slavedude:
+----------
+          ID: /usr/local/bin/ipos
+    Function: file.managed
+      Result: True
+     Comment: File /usr/local/bin/ipos updated
+     Started: 16:47:15.227572
+    Duration: 16.185 ms
+     Changes:   
+              ----------
+              diff:
+                  New file
+              mode:
+                  0644
+
+Summary for slavedude
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  16.185 ms
+xubuntu@xubuntu:/srv/salt/ipos$ 
+```
+
+Now it worked, but I couldn't run the command so I need to change the permissions to the file using salt.
+
+
 
 
 
