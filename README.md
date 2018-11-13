@@ -41,7 +41,7 @@ After that I used
 
 > sudo git add . 
 
-To add all the changed I'd made
+To add all the changes I'd made
 
 > sudo git commit
 
