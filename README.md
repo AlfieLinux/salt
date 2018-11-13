@@ -199,6 +199,37 @@ index c34861b..47fe929 100644
 
  lists all the changes made in your repository. And since the only things I've edited thusfar is my README.md it shows what changes were made to it.
 
+### git blame
+
+```
+$ git blame README.md
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   1) # Using github repository to update my saltstack.
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   2) 
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   3) #### This report is written from my personal computer using a Xubuntu 18.04.1 bootable USB and it's written using markdown.
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   4) 
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   5) ## Computer specs
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   6) 
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   7) - OS: Xubuntu 18.04.1 (bootable USB, original OS Windows 10 Professional N)
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   8) - CPU: Intel i5 6600k @ 3.5GHz
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000   9) - GPU: Nvidia Geforce GTX 1070 
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000  10) - RAM: 2x 8Gb DDR4 @ 2667MHz
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000  11) - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
+aff44519 (AlfieLinux 2018-11-13 14:50:40 +0000  12) 
+f4295190 (AlfieLinux 2018-11-13 15:32:49 +0000  13) ## Git salt repo /srv/salt (16:35 13.11.2018)
+2a60cb7e (AlfieLinux 2018-11-13 15:01:52 +0000  14) 
+e549257a (AlfieLinux 2018-11-13 14:52:47 +0000  15) I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
+76c12a4e (AlfieLinux 2018-11-13 15:12:43 +0000  16) 
+76c12a4e (AlfieLinux 2018-11-13 15:12:43 +0000  17) `sudo apt-get -y install salt-master salt-minion`
+9e8083a8 (AlfieLinux 2018-11-13 14:54:47 +0000  18)  
+e549257a (AlfieLinux 2018-11-13 14:52:47 +0000  19) I then cloned my already existing salt repository from github to my home directory.
+9e8083a8 (AlfieLinux 2018-11-13 14:54:47 +0000  20) 
+76c12a4e (AlfieLinux 2018-11-13 15:12:43 +0000  21) `git clone "Link from repo"`
+9e8083a8 (AlfieLinux 2018-11-13 14:54:47 +0000  22) 
+```
+
+Shows what was edited, when it was edited, who edited it and which line was edited. Again a useful command for group projects or at workplaces when someone has made a huge mistake and won't admit making one :').
+
+
 
 
 
