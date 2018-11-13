@@ -195,7 +195,9 @@ index c34861b..47fe929 100644
 +
 ```
 
-git diff "commit hash" lists all the changes made in your repository. And since the only things I've edited thusfar is my README.md it shows what changes were made to it.
+`git diff "commit hash"`
+
+ lists all the changes made in your repository. And since the only things I've edited thusfar is my README.md it shows what changes were made to it.
 
 
 
