@@ -259,7 +259,11 @@ HEAD is now at 7b096a4 READ
 SOURCES:
 
 [Tero Karvinen](http://terokarvinen.com/)
+
 [Tero's assignments](http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p)
+
 [Tero's GitHub Guide](http://terokarvinen.com/2016/publish-your-project-with-github)
+
 [GitHub](https://github.com/)
+
 [Some help with markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
