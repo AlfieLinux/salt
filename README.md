@@ -412,6 +412,18 @@ timppa@xubuntu:~$ ipos
 Tue Nov 13 17:06:09 UTC 2018
 ```
 
+## Continuation of my wordpress
+
+Since I want to keep updating my wordpress blog I wanted to convert this markdown file into html and upload it to wordpress aswell. I remembered that my friend [Petrus](http://blog.petrusmanner.com/) was talking about it in class and checked to see whether he had done it or not and to my surprise he found out what to do. So I did the same.
+How to convert markdown to html [Petrus's guide here](http://blog.petrusmanner.com/index.php/2018/11/08/server-management-with-salt-h3-git-and-markdown/).
+
+Simply enough you just need to install pandoc
+`sudo apt-get -y install pandoc`
+and convert the file into an html file 
+`sudo pandoc README.md -o wordpress.html`
+It copies and creates an html file instead of replacing the original .md file.
+
+
 ### Afterthoughts
 
 I think it's fun to learn new stuff with salt. You are given proper syntax errors that give you information about what went wrong and where. Trying to figure out stuff on your own is pretty rewarding and even if you end up looking things up from a guide you learn more stuff on the road of creating.
