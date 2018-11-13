@@ -10,7 +10,7 @@
 - RAM: 2x 8Gb DDR4 @ 2667MHz
 - MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)
 
-## Starting out
+## Git salt repo /srv/salt
 
 I started by booting my desktop and setting up my working environment. Then I installed Git, salt-master and salt-minion.
 
@@ -43,7 +43,7 @@ To add all the changes I'd made
 
 `sudo git commit`
 
-To save the changed to the local repo, but after using this command it asked my github account credentials so I need to put them in.
+To save the changes to the local repo, but after using this command it asked my github account credentials so I needed to put them in.
 
 `git config --global user.email "you@example.com"`
 
@@ -72,6 +72,10 @@ And it seems that I immediatly fixed the problem by using ; instead of &&.
 `sudo git add .; sudo git commit; sudo git pull; sudo git push`
 
 And it didn't work without adding sudo to every step.
+
+
+
+
 
 
 
