@@ -27,16 +27,17 @@ Now I got a folder called salt under /srv/ so that my life would be a little eas
 
 After that I copied everything from my original repository to my newly made one using cp (not that I was already under /srv/salt directory.
 
-> sudo cp -r /home/xubuntu/salt/salt/apache/ .
+```
+sudo cp -r /home/xubuntu/salt/salt/apache/ .
 
-> sudo cp -r /home/xubuntu/salt/salt/php/ .
+sudo cp -r /home/xubuntu/salt/salt/php/ .
 
-> sudo cp -r /home/xubuntu/salt/salt/skeleton/ .
+sudo cp -r /home/xubuntu/salt/salt/skeleton/ .
 
-> sudo cp -r /home/xubuntu/salt/salt/sysstat/ .
+sudo cp -r /home/xubuntu/salt/salt/sysstat/ .
 
-> sudo cp -r /home/xubuntu/salt/salt/top.sls .
-
+sudo cp -r /home/xubuntu/salt/salt/top.sls .
+```
 After that I used 
 
 > sudo git add . 
