@@ -1,0 +1,173 @@
+<h4 id="this-report-is-written-from-my-personal-computer-using-a-xubuntu-18.04.1-bootable-usb-and-its-written-using-markdown.">This report is written from my personal computer using a Xubuntu 18.04.1 bootable USB and it's written using markdown.</h4>
+<h2 id="computer-specs">Computer specs</h2>
+<ul>
+<li>OS: Xubuntu 18.04.1 (bootable USB, original OS Windows 10 Professional N)</li>
+<li>CPU: Intel i5 6600k @ 3.5GHz</li>
+<li>GPU: Nvidia Geforce GTX 1070</li>
+<li>RAM: 2x 8Gb DDR4 @ 2667MHz</li>
+<li>MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)</li>
+</ul>
+<h2 id="setting-up">Setting up</h2>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">setxkbmap</span> fi
+$ <span class="fu">sudo</span> apt-get update
+$ <span class="ex">timedatectl</span> set-timezone Europe/Helsinki
+$ <span class="fu">sudo</span> apt-get install vagrant git virtualbox</code></pre></div>
+<h2 id="assignment-a-script-that-turns-your-computer-in-to-a-minion.-21.11.2018-1900">Assignment A) Script that turns your computer in to a minion. (21.11.2018 @ 19:00)</h2>
+<p>I started by creating a directory called scripts</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> script
+$ <span class="fu">ls</span>
+$ <span class="ex">cd</span> script/</code></pre></div>
+<p>Then I checked my ip address so that I could add it in the script that I'm going to create.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">hostname</span> -I
+<span class="ex">192.168.10.50</span> </code></pre></div>
+<p>What I want my script to do is to update the package repo, install salt-minion, salt-master, git and then use my IP-address to overwrite /etc/salt/minion file for me.</p>
+<p>This is what my bash script ended up looking like.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">nano</span> despicable.sh
+↓
+<span class="co">#!/bin/bash</span>
+<span class="co"># Copyright 2018 Tuomas Olkinuora GPL v3</span>
+
+<span class="bu">echo</span> <span class="st">&quot;Keyboard map Finnish and installing salt and git&quot;</span>
+
+<span class="ex">setxkbmap</span> fi
+<span class="fu">sudo</span> apt-get update
+<span class="fu">sudo</span> apt-get -y install git salt-minion 
+
+<span class="bu">echo</span> <span class="st">&quot;Minionizing&quot;</span>
+
+<span class="bu">echo</span> <span class="st">&quot;master: 192.168.10.50&quot;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/salt/minion
+<span class="fu">sudo</span> systemctl restart salt-minion</code></pre></div>
+<h2 id="assignment-c-testing-a-new-image-with-vagrant.">Assignment C) Testing a new image with vagrant.</h2>
+<p>I started by Installing vagrant</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> apt-get install -y  vagrant virtualbox</code></pre></div>
+<p>I then needed to figure out which ubuntu image I wanted to use and I checked them from here: <a href="https://app.vagrantup.com/boxes/search?provider=virtualbox">Ordered from most famous to least famous VirtualBoxes</a></p>
+<p>I ended up choosing ubuntu/xenial64 which seemed legit with 3,1 million downloads and it ran 16.04 which I'm quite used to aswell.</p>
+<p>To get the vagrant up and running:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> vagrant init ubuntu/xenial64
+<span class="fu">sudo</span> vagrant up</code></pre></div>
+<p>It took no time at all to set up the vagrant virtual machine and all I needed to do now was connect to it:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> vagrant ssh
+<span class="ex">Welcome</span> to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-139-generic x86_64)
+
+ <span class="ex">*</span> Documentation:  https://help.ubuntu.com
+ <span class="ex">*</span> Management:     https://landscape.canonical.com
+ <span class="ex">*</span> Support:        https://ubuntu.com/advantage
+
+  <span class="ex">Get</span> cloud support with Ubuntu Advantage Cloud Guest:
+    <span class="ex">http</span>://www.ubuntu.com/business/services/cloud
+
+<span class="ex">0</span> packages can be updated.
+<span class="ex">0</span> updates are security updates.
+
+<span class="ex">New</span> release <span class="st">&#39;18.04.1 LTS&#39;</span> available.
+<span class="ex">Run</span> <span class="st">&#39;do-release-upgrade&#39;</span> to upgrade to it.
+
+
+<span class="ex">Last</span> login: Wed Nov 21 19:04:14 2018 from 10.0.2.2
+<span class="ex">vagrant@ubuntu-xenial</span>:~$ </code></pre></div>
+<p>I could've edited the Vagrantfile which holds like 3 lines of code inside, but I wanted to try and test the script that I had just made on a different computer.</p>
+<p>So I created a new folder called scripts on the vagrant computer</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> scripts</code></pre></div>
+<p>Then I created a new bash script called despicable</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">nano</span> despicable.sh</code></pre></div>
+<p>and copied everything from the earlier script inside it and ran it:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">bash</span> despicable.sh 
+<span class="ex">Keyboard</span> map Finnish and installing salt and git
+<span class="ex">despicable.sh</span>: line 6: setxkbmap: command not found
+<span class="ex">Get</span>:1 http://security.ubuntu.com/ubuntu xenial-security InRelease [107 kB]
+<span class="ex">Hit</span>:2 http://archive.ubuntu.com/ubuntu xenial InRelease
+<span class="ex">Get</span>:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]       
+<span class="ex">Get</span>:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]     
+<span class="ex">Get</span>:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [884 kB]
+<span class="ex">Get</span>:6 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [706 kB]
+<span class="ex">Fetched</span> 1,913 kB in 0s (2,094 kB/s)                      
+<span class="ex">Reading</span> package lists... Done
+<span class="ex">Reading</span> package lists... Done
+<span class="ex">Building</span> dependency tree       
+<span class="ex">Reading</span> state information... Done
+<span class="ex">salt-minion</span> is already the newest version (2015.8.8+ds-1)<span class="ex">.</span>
+<span class="fu">git</span> is already the newest version (1:2.7.4-0ubuntu1.5)<span class="ex">.</span>
+<span class="ex">0</span> upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+<span class="ex">Minionizing</span>
+<span class="ex">master</span>: 192.168.10.50</code></pre></div>
+<p>Now the computer was set up and all I needed to do was to accept the key from my master computer.</p>
+<p>First I checked for all the unaccepted keys:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt-key
+<span class="ex">Accepted</span> Keys:
+<span class="ex">xubuntu</span>
+<span class="ex">Denied</span> Keys:
+<span class="ex">Unaccepted</span> Keys:
+<span class="ex">ubuntu-xenial</span>
+<span class="ex">Rejected</span> Keys:</code></pre></div>
+<p>And accepted all the keys:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt-key -A
+<span class="ex">The</span> following keys are going to be accepted:
+<span class="ex">Unaccepted</span> Keys:
+<span class="ex">ubuntu-xenial</span>
+<span class="ex">Proceed?</span> [n/Y] y
+<span class="ex">Key</span> for minion ubuntu-xenial accepted.</code></pre></div>
+<p>Now I tested that the script had actually done what I wanted it to do:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&#39;ubu*&#39;</span> cmd.run <span class="st">&quot;echo hello&quot;</span>
+<span class="ex">ubuntu-xenial</span>:
+    <span class="ex">hello</span></code></pre></div>
+<p>I then wanted to download something on my newly made Vagrant machine:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&#39;ubu*&#39;</span> cmd.run <span class="st">&quot;sudo apt-get -y install cmatrix&quot;</span>
+↓
+<span class="ex">ubuntu-xenial</span>:
+    <span class="ex">Reading</span> package lists...
+    <span class="ex">Building</span> dependency tree...
+    <span class="ex">Reading</span> state information...
+    <span class="ex">Suggested</span> packages:
+      <span class="ex">cmatrix-xfont</span>
+    <span class="ex">The</span> following NEW packages will be installed:
+      <span class="ex">cmatrix</span>
+    <span class="ex">debconf</span>: unable to initialize frontend: Dialog
+    <span class="ex">debconf</span>: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+    <span class="ex">debconf</span>: falling back to frontend: Readline
+    <span class="ex">debconf</span>: unable to initialize frontend: Readline
+    <span class="ex">debconf</span>: (This frontend requires a controlling tty.)
+    <span class="ex">debconf</span>: falling back to frontend: Teletype
+    <span class="ex">dpkg-preconfigure</span>: unable to re-open stdin: 
+    <span class="ex">0</span> upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+    <span class="ex">Need</span> to get 0 B/15.8 kB of archives.
+    <span class="ex">After</span> this operation, 50.2 kB of additional disk space will be used.
+    <span class="ex">Selecting</span> previously unselected package cmatrix.
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 5%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 10%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 15%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 20%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 25%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 30%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 35%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 40%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 45%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 50%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 55%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 60%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 65%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 70%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 75%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 80%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 85%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 90%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 95%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 100%
+    <span class="kw">(</span><span class="ex">Reading</span> database ... 57279 files and directories currently installed.<span class="kw">)</span>
+    <span class="ex">Preparing</span> to unpack .../cmatrix_1.2a-5build2_amd64.deb ...
+    <span class="ex">Unpacking</span> cmatrix (1.2a-5build2<span class="kw">)</span> <span class="ex">...</span>
+    <span class="ex">Processing</span> triggers for man-db (2.7.5-1<span class="kw">)</span> <span class="ex">...</span>
+    <span class="ex">Setting</span> up cmatrix (1.2a-5build2<span class="kw">)</span> <span class="ex">...</span></code></pre></div>
+<p>And to test it on the minion computer:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">cmatrix</span> -C cyan</code></pre></div>
+<div class="figure">
+<img src="cmatrixcyantest.png" alt="Testing cmatrix on vagrant" />
+<p class="caption">Testing cmatrix on vagrant</p>
+</div>
+<h3 id="afterthoughts">Afterthoughts:</h3>
+<p>Vagrant is a really efficient way to create a working environment to test out stuff before putting it out to actual use. There's always a risk using someone elses binary, so be careful and only use images that you deem trustworthy.</p>
+<h2 id="sources">Sources:</h2>
+<p><a href="http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p">Tero's assignments</a></p>
+<p><a href="https://app.vagrantup.com/boxes/search?provider=virtualbox">Vagrant images ordered from most downloaded to least downloaded</a></p>
+<p><a href="https://app.vagrantup.com/ubuntu/boxes/xenial64">The Vagrant image I ended up using</a></p>
+<p><a href="https://github.com/AlfieLinux/salt">My GitHub repo</a></p>
