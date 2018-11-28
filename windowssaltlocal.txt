@@ -1,0 +1,57 @@
+The installation of the windows salt worked without problems and I could
+PS C:\salt> salt-call --local pkg.install git -l debug
+[DEBUG   ] Reading configuration from c:\salt\conf\minion
+[DEBUG   ] Including configuration from 'c:\salt\conf\minion.d\_schedule.conf'
+[DEBUG   ] Reading configuration from c:\salt\conf\minion.d\_schedule.conf
+[DEBUG   ] Configuration file path: c:\salt\conf\minion
+[WARNING ] Insecure logging configuration detected! Sensitive data may be logged.
+[DEBUG   ] Reading configuration from c:\salt\conf\minion
+[DEBUG   ] Including configuration from 'c:\salt\conf\minion.d\_schedule.conf'
+[DEBUG   ] Reading configuration from c:\salt\conf\minion.d\_schedule.conf
+[DEBUG   ] Determining pillar cache
+[DEBUG   ] LazyLoaded jinja.render
+[DEBUG   ] LazyLoaded yaml.render
+[DEBUG   ] LazyLoaded jinja.render
+[DEBUG   ] LazyLoaded yaml.render
+[DEBUG   ] LazyLoaded pkg.install
+[DEBUG   ] SMBIOS: neither dmidecode nor smbios found!
+[WARNING ] C:\salt\bin\lib\site-packages\salt\modules\win_update.py:91: DeprecationWarning: The 'win_update' module is being deprecated and will be removed in Salt Fluorine (Unreleased). Please use the 'win_wua' module instead.
+
+[DEBUG   ] Could not LazyLoad pkg.normalize_name: 'pkg.normalize_name' is not available.
+[DEBUG   ] Using existing pkg metadata db for saltenv 'base' (age is 0:09:18.407314)
+[DEBUG   ] LazyLoaded roots.envs
+[DEBUG   ] Could not LazyLoad roots.init: 'roots.init' is not available.
+[DEBUG   ] Updating roots fileserver cache
+[DEBUG   ] Requesting URL https://github.com/git-for-windows/git/releases/download/v2.19.1.windows.1/Git-2.19.1-64-bit.exe using GET method
+[INFO    ] Executing command '"C:\WINDOWS\system32\cmd.exe" /s /c ""c:\salt\var\cache\salt\minion\extrn_files\base\github.com\git-for-windows\git\releases\download\v2.19.1.windows.1\Git-2.19.1-64-bit.exe" /VERYSILENT /NORESTART /SP- /NOCANCEL"' in directory 'c:\salt\var\cache\salt\minion\extrn_files\base\github.com\git-for-windows\git\releases\download\v2.19.1.windows.1'
+[DEBUG   ] Using existing pkg metadata db for saltenv 'base' (age is 0:09:57.226542)
+[DEBUG   ] LazyLoaded nested.output
+local:
+    ----------
+    git:
+        ----------
+        new:
+            2.19.1
+        old:
+
+PS C:\salt> salt-call --local pkg.install firefox
+[WARNING ] C:\salt\bin\lib\site-packages\salt\modules\win_update.py:91: DeprecationWarning: The 'win_update' module is being deprecated and will be removed in Salt Fluorine (Unreleased). Please use the 'win_wua' module instead.
+
+local:
+    ----------
+    Mozilla Firefox 63.0.3 (x64 en-US):
+        ----------
+        new:
+        old:
+            63.0.3
+    Mozilla Maintenance Service:
+        ----------
+        new:
+            63.0
+        old:
+            63.0.3.6892
+    firefox:
+        ----------
+        new:
+            63.0
+        old:
