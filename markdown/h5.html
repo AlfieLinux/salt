@@ -1,0 +1,292 @@
+<h1 id="h5-configuring-windows-settings-using-salt">H5 Configuring Windows settings using SALT</h1>
+<p>In this report I'm going to configure some settings from my old laptop and do some actual configurations to make it usable.</p>
+<h2 id="computer-specs">Computer specs</h2>
+<p>Computer specs from my main PC that is working as the salt-minion.</p>
+<ul>
+<li>OS: Xubuntu 18.04.1 (bootable USB, original OS Windows 10 Professional N)</li>
+<li>CPU: Intel i5 6600k @ 3.5GHz</li>
+<li>GPU: Nvidia Geforce GTX 1070</li>
+<li>RAM: 2x 8Gb DDR4 @ 2667MHz</li>
+<li>MoBo: Asus Maximus VIII Ranger (Boot menu opens with F8)</li>
+</ul>
+<p>Computer specs from my old laptop that is working as the salt-master which I booted using <a href="http://ftp.lysator.liu.se/ubuntu-dvd/xubuntu/releases/18.04/release/">Xubuntu 18.04.1</a></p>
+<ul>
+<li>product: HP ProBook 655 G1 (E8J42AV)</li>
+<li>OS: Windows 7 Professional (outdated license, which wont renew for some reason)</li>
+<li>CPU: AMD A10-5750M APU with Radeon(tm) HD Graphics @ 2.4Ghz</li>
+<li>RAM: 1x 8GB DDR3 @ 1600 MHz</li>
+</ul>
+<p>Then I did some personal preference settings, updated my basic packet repositories and had my keyboard layout switched to Finnish.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">setxkbmap</span> fi
+<span class="fu">sudo</span> apt-get update</code></pre></div>
+<p>And cloned my git repository:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> apt-get -y install git
+<span class="fu">sudo</span> git clone https://github.com/AlfieLinux/salt.git</code></pre></div>
+<p>and added my credentials</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> git config --global user.email <span class="st">&quot;tuomas.olkinuora@hotmail.fi&quot;</span>
+<span class="fu">sudo</span> git config --global user.name <span class="st">&quot;Tuomas Olkinuora&quot;</span></code></pre></div>
+<h2 id="a-configure-windows-with-salt-so-that-windows-is-the-slave-and-linux-is-the-master.-0935"><a href="http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p">A) Configure windows with salt, so that Windows is the slave and Linux is the master.</a> (09:35)</h2>
+<p>I started by installing the required files for the master-slave relationship to work between my 2 computers.</p>
+<p>The first thing I did was installing git and salt-master on my master computer.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> apt-get -y install salt-master salt-minion</code></pre></div>
+<p>I first tried using my salt-master locally and it worked normally. I then checked the version of salt that was installed from the package repo which was &quot;salt 2017.7.4 (Oxygen)&quot;. I then installed that version on my windows computer by going to <a href="https://repo.saltstack.com/windows/">saltstack repo</a> and took the package that used AMD64 architecture and Python 3 &quot;Salt-Minion-2017.7.4-Py3-AMD64-Setup.exe&quot;. I applied the information about my masters ip and minions id and got through with the installation.</p>
+<p>After having salt-minion installed on my laptop it was time to wait a bit for it to show up on my salt-master.</p>
+<p>But somehow <code>sudo salt-key -L</code> or <code>sudo salt-key</code> wouldn't list my win7 computer, no matter how long I waited.</p>
+<p>So I thought that my firewall might be the cause and allowed both of the salt ports I knew about on the salt-master computer.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> ufw allow 4505/tcp
+<span class="fu">sudo</span> ufw allow 4506/tcp</code></pre></div>
+<p>And checked to see if the keys had showed up</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt-key -L</code></pre></div>
+<pre><code>$ sudo salt-key
+Accepted Keys:
+xubuntu
+Denied Keys:
+Unaccepted Keys:
+Rejected Keys:</code></pre>
+<p>But only the key that I had accepted earlier showed up &quot;xubuntu&quot;.</p>
+<p>The second thing I tried to do was to updated my salt version by adding the newest package to the repository.</p>
+<p>I checked how to do it from <a href="http://terokarvinen.com/2018/control-windows-with-salt">Tero's Guide on how to control Windows using salt</a></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">wget</span> https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub
+$ <span class="fu">sudo</span> apt-key add SALTSTACK-GPG-KEY.pub  # New trust</code></pre></div>
+<p>To add the latest version from <a href="https://repo.saltstack.com/">saltstack repo</a> and a new trust relationship</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">echo</span> <span class="st">&quot;deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/2018.3 xenial main&quot;</span><span class="kw">|</span><span class="fu">sudo</span> tee /etc/apt/sources.list.d/saltstack.list</code></pre></div>
+<p>Then I updated my package repository and installed the new packages</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> apt-get update
+$ <span class="fu">sudo</span> apt-get -y install salt-master salt-minion
+$ <span class="fu">sudo</span> systemctl restart salt-minion
+$ <span class="fu">sudo</span> systemctl restart salt-master</code></pre></div>
+<p>Restarted both services and tested that they work locally.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">hostname</span> -I
+<span class="ex">192.168.10.50</span> 
+
+$ <span class="bu">echo</span> <span class="st">&quot;master: 192.168.10.50&quot;</span>
+<span class="ex">master</span>: 192.168.10.50
+
+$ <span class="bu">echo</span> <span class="st">&quot;master: 192.168.10.50&quot;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/salt/minion
+<span class="ex">master</span>: 192.168.10.50
+
+$ <span class="fu">sudo</span> systemctl restart salt-minion.service 
+
+$ <span class="fu">sudo</span> salt-key
+<span class="ex">Accepted</span> Keys:
+<span class="ex">Denied</span> Keys:
+<span class="ex">Unaccepted</span> Keys:
+<span class="ex">xubuntu</span>
+<span class="ex">Rejected</span> Keys:
+
+$ <span class="fu">sudo</span> salt-key -A
+<span class="ex">The</span> following keys are going to be accepted:
+<span class="ex">Unaccepted</span> Keys:
+<span class="ex">xubuntu</span>
+<span class="ex">Proceed?</span> [n/Y] y
+<span class="ex">Key</span> for minion xubuntu accepted.
+
+$ <span class="fu">sudo</span> salt <span class="st">&#39;*&#39;</span> test.ping
+<span class="ex">xubuntu</span>:
+    <span class="ex">True</span>
+
+$ <span class="fu">sudo</span> salt <span class="st">&#39;*&#39;</span> cmd.run <span class="st">&quot;whoami&quot;</span>
+<span class="ex">xubuntu</span>:
+    <span class="ex">root</span></code></pre></div>
+<p>And it worked like a charm, but locally.</p>
+<p>I then tried to install the newest package from saltstack repo by hand on my windows laptop and it once again didn't go without trouble.</p>
+<p>My laptop was crying to me about having an old license and since I couldn't find it from anywhere my computer was basically useless. This time it didn't even try to go through the installation but got stuck somewhere for 15 minutes and I decided to give up on it.</p>
+<h3 id="what-will-i-do-now-1118">What will I do now? (11:18)</h3>
+<p>Well since windows and both of my laptops are acting up I decided to boot one of them using Xubuntu and using my bigboi PC with windows as the slave.</p>
+<p>I did all the basic configurations once again on my laptop and it ran normally. I used wget to get my script from my repository and to configure my laptop super fast to the way I like it.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">wget</span> https://raw.githubusercontent.com/AlfieLinux/salt/master/script/despicable.sh
+$ <span class="fu">bash</span> despicable.sh</code></pre></div>
+<p>The installation went without trouble and I could use salt locally.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&#39;xub*&#39;</span> test.ping
+<span class="ex">xubuntu</span>:
+    <span class="ex">True</span></code></pre></div>
+<p>So now for the troubling part</p>
+<p>I checked the package version</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">salt</span> --version</code></pre></div>
+<p>Then I downloaded the same package from the saltstack repo on my windows 2017.17.04 with py3</p>
+<p>I then put my laptop ip 192.168.10.61 and the slave name as win10temp. And went through the installation once again.</p>
+<p>After the installation I selected the &quot;start salt now&quot; (or whatever the name was) and checked if any unaccepted keys had shown up.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt-key 
+<span class="ex">Accepted</span> Keys:
+<span class="ex">xubuntu</span>
+<span class="ex">Denied</span> Keys:
+<span class="ex">Unaccepted</span> Keys:
+<span class="ex">win10temp</span>
+<span class="ex">Rejected</span> Keys:</code></pre></div>
+<p>And to my surprise there it was, waiting, like a miracle to be accepted.</p>
+<p>Now I could actually start configuring some windows settings using salt and even better, try it on my actual computer that I use every day. (Although I'm kinda worried about this).</p>
+<p>I then tested that the Windows machine actually answers by using test.ping</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&#39;*&#39;</span> test.ping
+<span class="ex">xubuntu</span>:
+    <span class="ex">True</span>
+<span class="ex">win10temp</span>:
+    <span class="ex">True</span></code></pre></div>
+<p>and it did, so now its time to move to the next step.</p>
+<h3 id="adding-package-management-for-windows"><a href="http://terokarvinen.com/2018/control-windows-with-salt">Adding package management for windows</a></h3>
+<p>I created a directory for the windows repository package management files and gave it proper permissions</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> mkdir /srv/salt/win
+$ <span class="bu">cd</span> /srv/salt/
+$ <span class="fu">sudo</span> chown root.salt /srv/salt/win/
+$ <span class="fu">sudo</span> chmod ug+rwx /srv/salt/win/</code></pre></div>
+<p>Then I pulled the windows repo package files.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt-run winrepo.update_git_repos
+<span class="ex">https</span>://github.com/saltstack/salt-winrepo-ng.git:
+    <span class="ex">/srv/salt/win/repo-ng/salt-winrepo-ng</span>
+<span class="ex">https</span>://github.com/saltstack/salt-winrepo.git:
+    <span class="ex">/srv/salt/win/repo/salt-winrepo</span>
+$ <span class="fu">sudo</span> salt -G <span class="st">&#39;os:windows&#39;</span> pkg.refresh_db
+<span class="ex">win10temp</span>:
+    <span class="ex">----------</span>
+    <span class="ex">failed</span>:
+        <span class="ex">0</span>
+    <span class="ex">success</span>:
+        <span class="ex">260</span>
+    <span class="ex">total</span>:
+        <span class="ex">260</span>
+
+$ <span class="fu">sudo</span> salt <span class="st">&#39;win*&#39;</span> pkg.install vlc
+<span class="ex">win10temp</span>:
+    <span class="ex">----------</span>
+    <span class="ex">vlc</span>:
+        <span class="ex">----------</span>
+        <span class="ex">new</span>:
+            <span class="ex">3.0.4</span>
+        <span class="ex">old</span>:
+            <span class="ex">2.2.3</span></code></pre></div>
+<p>And voilà, I could now use package management on my windows and I when downloading stuff, I only need to trust the software creators.</p>
+<h2 id="b-manage-windows-with-salt-without-using-master-slave-architecture-1159"><a href="http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p">B) Manage windows with salt without using master-slave architecture</a> (11:59)</h2>
+<p>I started by opening my PowerShell as administrator</p>
+<p>By right clicking the PowerShell icon and selecting &quot;run as administrator&quot;. I tested that salt works with</p>
+<div class="figure">
+<img src="powershell.png" />
+
+</div>
+<pre class="powershell"><code>salt-call --local test.ping</code></pre>
+<p>Which pinged back true, so I deemed that the local salt-call works.</p>
+<p>I then tried to install something using the salt-call local</p>
+<pre class="powershell"><code>salt-call --local pkg.install vlc</code></pre>
+<p>This seemed to work normally since VLC got installed on my computer.</p>
+<div class="figure">
+<img src="salt-call.png" />
+
+</div>
+<h2 id="c-and-e-edit-any-windows-configuration-file-using-salt.-1315"><a href="http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p">C and E) Edit any windows configuration file using salt.</a> (13:15)</h2>
+<p>I immediatly knew that I wanted to edit some games config file using salt and I landed on my most recently played game called Destiny 2.</p>
+<p>I figured out what needed to be done locally from <a href="https://www.reddit.com/r/DestinyTechSupport/comments/78jjt6/psa_how_to_change_config_file_custom_framerate/">here</a> on my windows computer and tested that the configuration actually worked by launching destiny 2.</p>
+<p>Destiny 2 launched normally so I atleast knew that I didn't break anything, now it was just time to see if the bad resolution (1280x720) that I wanted to use actually worked. I didn't need to go further than the character selection screen to see that Things were pretty pixelated but for the sake of actually trying, I launched the game and picked a location to travel to. After landing I could definetly see that destiny 2 had launched using the settings that I applied by looking at the surroundings.</p>
+<p><img src="destiny1280test.png" /> <img src="destiny1280settings.png" /></p>
+<p>Now it was time to manage the file using salt, so I started by closing destiny 2 for now. I dragged the xml file from my windows directory to github, which I then pulled to my Linux computer using</p>
+<p><code>$ sudo git pull</code>.</p>
+<p>I then created a new folder under /srv/salts</p>
+<p><code>$ sudo mkdir destconf</code></p>
+<p>changed directories</p>
+<p><code>$ cd destconf</code></p>
+<p>copied the xml file</p>
+<p><code>$ sudo cp /srv/salt/cvars.xml .</code></p>
+<p>and created a new init.sls file</p>
+<p><code>$ sudo nano init.sls</code></p>
+<p>I started by changing a few lines inside the file specifically</p>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">        <span class="kw">&lt;cvar</span><span class="ot"> name=</span><span class="st">&quot;fullscreen_resolution_width&quot;</span><span class="ot"> value=</span><span class="st">&quot;1920&quot;</span> <span class="kw">/&gt;</span>
+                <span class="kw">&lt;cvar</span><span class="ot"> name=</span><span class="st">&quot;fullscreen_resolution_height&quot;</span><span class="ot"> value=</span><span class="st">&quot;1080&quot;</span> <span class="kw">/&gt;</span></code></pre></div>
+<p>I changed the values back to 1920 and 1080 from the earlier 1280 and 720 that I used for the sake of testing.</p>
+<p>Now inside the init.sls file I wrote</p>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">C:</span><span class="at">\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars</span>
+  <span class="fu">file.managed:</span>
+    <span class="kw">-</span> <span class="fu">source:</span><span class="at"> salt://destconf/cvars.xml</span></code></pre></div>
+<p>Thinking that it would work that easily.</p>
+<p>I then tried to run the state</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&#39;win*&#39;</span> state.apply destconf
+<span class="ex">win10temp</span>:
+    <span class="ex">Data</span> failed to compile:
+<span class="ex">----------</span>
+    <span class="ex">Rendering</span> SLS <span class="st">&#39;base:destconf&#39;</span> failed: mapping values are not allowed here<span class="kw">;</span> <span class="ex">line</span> 2
+
+<span class="ex">---</span>
+<span class="ex">C</span>:\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml
+  <span class="ex">file.managed</span>:    <span class="op">&lt;</span>======================
+    <span class="ex">-</span> source: salt://destconf/cvars.xml 
+<span class="ex">---</span>
+<span class="ex">ERROR</span>: Minions returned with non-zero exit code</code></pre></div>
+<p>Well as you can see from above, it didn't work. Error message hinted me that something was wrong with the state that I had written, specifically in line 2. This could mean 2 things for me: either the &quot;file.managed:&quot; was poorly written or there was something wrong in the first line I had written. Now since I know that the 2nd line should work I looked in to the first line and noticed that I had missed a single &quot;:&quot; from the end.</p>
+<p>I edited the init.sls once again:</p>
+<p><code>$ sudoedit init.sls</code></p>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">C:</span><span class="at">\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml:</span>
+  <span class="fu">file.managed:</span>
+    <span class="kw">-</span> <span class="fu">source:</span><span class="at"> salt://destconf/cvars.xml</span></code></pre></div>
+<p>and now I tried to run the state again</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&quot;win10temp&quot;</span> state.apply destconf
+<span class="ex">win10temp</span>:
+<span class="ex">----------</span>
+          <span class="ex">ID</span>: C:\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml
+    <span class="ex">Function</span>: file.managed
+      <span class="ex">Result</span>: True
+     <span class="ex">Comment</span>: File C:\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml updated
+     <span class="ex">Started</span>: 14:44:30.724674
+    <span class="ex">Duration</span>: 53.361 ms
+     <span class="ex">Changes</span>:   
+              <span class="ex">----------</span>
+              <span class="ex">diff</span>:
+                  <span class="ex">---</span> 
+                  <span class="ex">+++</span> 
+                  <span class="ex">@@</span> -24,8 +24,8 @@
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;atmosphere_lighting_detail&quot;</span> value=<span class="st">&quot;1&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;master&quot;</span> value=<span class="st">&quot;0&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;framerate_cap_enabled&quot;</span> value=<span class="st">&quot;0&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">-</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_width&quot;</span> value=<span class="st">&quot;1280&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">-</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_height&quot;</span> value=<span class="st">&quot;720&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">+</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_width&quot;</span> value=<span class="st">&quot;1920&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">+</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_height&quot;</span> value=<span class="st">&quot;1080&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;fullscreen_refresh_rate_numerator&quot;</span> value=<span class="st">&quot;144001&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;fullscreen_refresh_rate_denominator&quot;</span> value=<span class="st">&quot;1000&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;windowed_resolution_width&quot;</span> value=<span class="st">&quot;1280&quot;</span> /<span class="op">&gt;</span>
+
+<span class="ex">Summary</span> for win10temp
+<span class="ex">------------</span>
+<span class="ex">Succeeded</span>: 1 (changed=1)
+<span class="ex">Failed</span>:    0
+<span class="ex">------------</span>
+<span class="ex">Total</span> states run:     1
+<span class="ex">Total</span> run time:  53.361 ms</code></pre></div>
+<p><img src="destiny1920test.png" /> <img src="destiny1920settings.png" /></p>
+<p>Again I didn't need to go further than the character selection screen to notice that my state and the configurations I had made had applied. However I did go further, to the same location where I took the first picture to see that my eyes weren't playing tricks on me. I changed the resolution back to 1280x720 once more, but this time I used the games GUI to do it, instead of editing the config file itself. Ran the state again and it ran flawlessly without errors, and I noticed instantly that it had reverted the changes from 1280x720 to 1920x1080.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> salt <span class="st">&quot;win10temp&quot;</span> state.apply destconf
+<span class="ex">win10temp</span>:
+<span class="ex">----------</span>
+          <span class="ex">ID</span>: C:\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml
+    <span class="ex">Function</span>: file.managed
+      <span class="ex">Result</span>: True
+     <span class="ex">Comment</span>: File C:\Users\Tuomas\AppData\Roaming\Bungie\DestinyPC\prefs\cvars.xml updated
+     <span class="ex">Started</span>: 14:53:44.784693
+    <span class="ex">Duration</span>: 50.863 ms
+     <span class="ex">Changes</span>:   
+              <span class="ex">----------</span>
+              <span class="ex">diff</span>:
+                  <span class="ex">---</span> 
+                  <span class="ex">+++</span> 
+                  <span class="ex">@@</span> -24,8 +24,8 @@
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;atmosphere_lighting_detail&quot;</span> value=<span class="st">&quot;1&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;master&quot;</span> value=<span class="st">&quot;0&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;framerate_cap_enabled&quot;</span> value=<span class="st">&quot;0&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">-</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_width&quot;</span> value=<span class="st">&quot;1280&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">-</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_height&quot;</span> value=<span class="st">&quot;720&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">+</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_width&quot;</span> value=<span class="st">&quot;1920&quot;</span> /<span class="op">&gt;</span>
+                  <span class="ex">+</span>     <span class="op">&lt;</span>cvar name=<span class="st">&quot;fullscreen_resolution_height&quot;</span> value=<span class="st">&quot;1080&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;fullscreen_refresh_rate_numerator&quot;</span> value=<span class="st">&quot;144001&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;fullscreen_refresh_rate_denominator&quot;</span> value=<span class="st">&quot;1000&quot;</span> /<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ex">cvar</span> name=<span class="st">&quot;windowed_resolution_width&quot;</span> value=<span class="st">&quot;1280&quot;</span> /<span class="op">&gt;</span>
+
+<span class="ex">Summary</span> for win10temp
+<span class="ex">------------</span>
+<span class="ex">Succeeded</span>: 1 (changed=1)
+<span class="ex">Failed</span>:    0
+<span class="ex">------------</span>
+<span class="ex">Total</span> states run:     1
+<span class="ex">Total</span> run time:  50.863 ms</code></pre></div>
+<p>Now this is something that could be really useful when trying to handle your game configurations. When you e.g let a friend of yours play on your account and they apply some settings that you don't like.</p>
+<h3 id="afterthoughts">Afterthoughts</h3>
+<p>I found that configuring windows with salt can be tedious at times and most of my time went on figuring out how to get my salt-key to get the windows salt-key to show up on my salt-master. Getting all this done however feels really rewarding and after these assignments I feel wiser and confident to actually manage settings from my main PC using salt-master since my PC actually didn't break.</p>
+<p>SOURCES:</p>
+<p><a href="http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-3004-ti-ja-3002-to-%e2%80%93-loppukevat-2018-5p">Teros assignments</a></p>
+<p><a href="http://terokarvinen.com/2018/control-windows-with-salt">Teros guide on how to use salt with windows as a slave and linux as the master</a></p>
+<p><a href="https://repo.saltstack.com/windows/">saltstack repo for windows</a></p>
+<p><a href="https://www.reddit.com/r/DestinyTechSupport/comments/78jjt6/psa_how_to_change_config_file_custom_framerate/">How to edit destiny 2 settings</a></p>
