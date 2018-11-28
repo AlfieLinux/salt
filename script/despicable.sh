@@ -12,12 +12,13 @@ echo "Minionizing"
 echo "master: localhost" | sudo tee /etc/salt/minion
 
 echo "Retrieving salt from GitHub"
+sudo systemctl restart salt-minion
+sudo salt-key -A
+## not sure if it's wise to accept all salt-keys but then again this setup is made so that you can run it on a fresh computer, so there should be no problems.
+echo "git settings"
 
 cd /srv/
 sudo git clone https://github.com/AlfieLinux/salt.git
-sudo systemctl restart salt-minion
-
-echo "git settings"
 
 git config --global credential.helper "cache --timeout=3600"
 git config --global push.default simple
