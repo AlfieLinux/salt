@@ -16,7 +16,6 @@ echo "Retrieving salt from GitHub"
 cd /srv/
 sudo git clone https://github.com/AlfieLinux/salt.git
 sudo systemctl restart salt-minion
-cd /salt/
 
 echo "git settings"
 
